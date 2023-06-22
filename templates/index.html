@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Booking Forum</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Verdana, Geneva, sans-serif;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .title {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin: 10px 10% 10px; /* Adjust the margin value */
+        }
+
+        .box {
+            flex: 1; /* Added flex property */
+            width: 30%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 10px; /* Adjust the margin-top value */
+            text-align: center; /* center text */
+        }
+
+        .header-image { 
+            width: 25%; /* image width */
+            height: auto;
+        }
+
+        h3 {
+            color: #333333;
+            font-size: 18px; /* Adjust the font size */
+            margin-bottom: 10px; /* Add margin-bottom for spacing */
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px; /* Decrease font size */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px; /* Decrease font size */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+            font-size: 14px; /* Decrease font size */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        .ticket-info {
+            font-size: 14px; /* Decrease the font size */
+            text-align: center; /* Center the text */
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <h1 class="title">Movie Booking Forum</h1>
+
+        <img class="header-image" src="https://live.staticflickr.com/65535/52975829355_32d0f418bb_z.jpg" alt="Header Image">
+        
+        <p class="ticket-info">Welcome to THE MATRIX movie booking forum. <br> We have 10 seats available, enter your name below to let us know you can make it.</p>
+
+        <div class="container">
+            <div class="box">
+                <h3>Submit New Ticket:</h3>
+                <form action="/" method="post">
+                    <input type="text" name="name" placeholder="Enter your full name" required pattern="[A-Za-z\s]+" title="Only alphabetic characters and spaces are allowed">
+                    <br><br>
+                    <input type="checkbox" name="payment" value="paid" required>
+                   <label for="payment" style="font-size: 13px;">I can pay $5 for the ticket</label>
+
+                    <br><br>
+                    <button class="button" type="submit">Submit</button>
+                    {% if error %}
+                    <p class="error">{{ error }}</p>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div class="box">
+                <h3>Current Ticket Queue:</h3>
+                <table>
+                    <tr>
+                        <th>Position</th>
+                        <th>Name</th>
+                    </tr>
+                    {% for i in range(queue|length) %}
+                    {% set ticket = queue[i] %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ ticket.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="box">
+                <h3>Process Next Ticket:</h3>
+                <form action="/process" method="post">
+                    <button class="button" type="submit">Process Next</button>
+                </form>
+            </div>
+
+            <div class="box">
+                <h3>Processed Users:</h3>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                    {% for user in processed_users %}
+                    <tr>
+                        <td>{{ user }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <p>Total Processed: {{ processed_count }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
